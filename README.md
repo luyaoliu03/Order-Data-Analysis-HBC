@@ -4,4 +4,4 @@ Analyzed order-level data to capture growth opportunities for Hudson's Bay Compa
 # Explore the database
 Data Source: Oracle OMS database (SDMRK)
 
-All the online orders data details will flow into SDMRK.
+All the online orders data details would flow into SDMRK.
