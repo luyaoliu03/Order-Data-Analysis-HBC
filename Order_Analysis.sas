@@ -199,15 +199,12 @@ CREATE TABLE TopBrand_Nov AS
 	FROM Sddb.Orders A
 	LEFT JOIN Sddb.Product B 
 	ON A.SKU = B.SKU
-	WHERE ORDERDATE GE &FY17NOVstart AND ORDERDATE LE &FY17NOVend
+	WHERE ORDERDATE GE &NovFY19start AND ORDERDATE LE &NovFY19end
 	GROUP BY 1
 	ORDER BY 2 DESC;
 QUIT;
 
-/*4.Top 10 intl countries shipped/ billed by orders for FY17 DEC*/
-
-%LET FY17DECstart = '26Dec2017:00:00:00'DT; /*To QA code*/
-%LET FY17DECend = '30Dec2017:23:59:59'DT;
+/*4. What were top 10 international countries shipped to in Nov FY19*/
 
 PROC SQL OUTOBS = 10;
 	CREATE TABLE TopIntlcountr_Dec AS
@@ -216,7 +213,7 @@ PROC SQL OUTOBS = 10;
 	FROM Sddb.Orders
 	LEFT JOIN Sddb.Address 
 	ON Orders.SHIP_TO_ADDRESS_ID = Address.ADDRESS_ID  /**transfer datatype since it's scientific number**/
-	WHERE ORDERDATE GE &FY17DECstart AND ORDERDATE LE &FY17DECend
+	WHERE ORDERDATE GE &NovFY19start AND ORDERDATE LE &NovFY19end
 	GROUP BY COUNTRY
 	ORDER BY 2;
 QUIT;
