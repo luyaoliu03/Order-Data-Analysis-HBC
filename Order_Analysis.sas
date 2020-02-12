@@ -232,7 +232,7 @@ CREATE TABLE Insights_0 AS
 ;
 QUIT;
 
-/*Explore the percentage of conversion in each channel (APP, Site, Store...) and compare them by AOV*/
+/*Explore the percentage of conversion in each device channel (APP, Site, Store...) and compare them by AOV*/
 
 PROC SQL;
 CREATE TABLE Insights_1 AS
@@ -247,7 +247,7 @@ CREATE TABLE Insights_1 AS
 	ORDER BY 2 DESC;
 QUIT;
 
-/*Saksfirst*/
+/*Explore the percentage of conversion and AOV by Saksfirst*/
 PROC SQL;
 CREATE TABLE Insights_2 AS
 	SELECT 
@@ -261,7 +261,7 @@ CREATE TABLE Insights_2 AS
 	ORDER BY 2 DESC;
 QUIT;
 
-/*Registered*/ /*ERROR*/
+/*Explore the percentage of conversion and AOV by Registered customers*/
 PROC SQL;
 CREATE TABLE Insights_3 AS
 	SELECT 
@@ -270,31 +270,15 @@ CREATE TABLE Insights_3 AS
 	SUM(DEMAND_DOLLARS)/ COUNT(DISTINCT(A.ORDER_NUMBER)) AS AOV
 	FROM Sddb.Orders AS A
 	LEFT JOIN Sddb.Customer AS B
-	ON A.CUSTOMER_NUMBER = B.CUSTOMER_ID /*Are they the same?*/
+	ON A.CUSTOMER_NUMBER = B.CUSTOMER_ID
 	WHERE ORDERDATE GE &NovFY19start AND ORDERDATE LE &NovFY19end 
 	AND Orders.GROUP_ID IN ('35','36')
 	GROUP BY 1
 	ORDER BY 2 DESC;
 QUIT;
 
-/*SaksFirst, Registered*/ /*ERROR*/
-/*PROC SQL;
-CREATE TABLE Insights_3 AS
-	SELECT 
-	REGISTERED_CUSTOMER,
-	COUNT(DISTINCT(A.ORDER_NUMBER)) AS SUM_ORDERS,
-	SUM(DEMAND_DOLLARS)/ COUNT(DISTINCT(A.ORDER_NUMBER)) AS AOV
-	FROM Sddb.Orders AS A
-	LEFT JOIN Sddb.Customer AS B
-	ON A.CUSTOMER_NUMBER = B.CUSTOMER_ID
-	WHERE ORDERDATE GE &FY17DECstart AND ORDERDATE LE &FY17DECend 
-	AND Orders.GROUP_ID IN ('35','36')
-	GROUP BY 1
-	ORDER BY 2 DESC;
-QUIT;
-*/
 
-/*Employee*/
+/*Explore the percentage of conversion and AOV by Employee*/
 PROC SQL;
 CREATE TABLE Insights_5 AS
 	SELECT 
@@ -307,7 +291,7 @@ CREATE TABLE Insights_5 AS
 	ORDER BY 2 DESC;
 QUIT;
 
-/*State*/
+/*Explore top 10 State that ordered*/
 PROC SQL OUTOBS = 10;
 	CREATE TABLE Insights_6 AS
 	SELECT STATE, 
@@ -319,20 +303,3 @@ PROC SQL OUTOBS = 10;
 	GROUP BY 1
 	ORDER BY 2 DESC;
 QUIT;
-
-/*
-PROC SQL OUTOBS = 10;
-CREATE TABLE Insights_Shoes_Kids AS
-	SELECT COUNT( DISTINCT(ORDER_NUMBER) ),
-	AVG(RECENCY),
-	COUNTRY
-	FROM Sddb.Orders
-	LEFT JOIN Sddb.Individual 
-	ON Orders.INDIVIDUAL_ID = Individual.INDIVIDUAL_ID
-	LEFT JOIN Sddb.Address
-	ON Orders.SHIP_TO_ADDRESS_ID = Address.ADDRESS_ID
-	WHERE ORDERDATE GE &FY17DECstart AND ORDERDATE LE &FY17DECend 
-	AND Orders.GROUP_ID IN ('35','36')
-	GROUP BY SAKS_FIRST_INDICATOR, EMPLOYEE_INDICATOR, COUNTRY;
-QUIT;
-*/
