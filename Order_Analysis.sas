@@ -212,26 +212,28 @@ PROC SQL OUTOBS = 10;
 	COUNT(DISTINCT ORDER_NUMBER) AS SUM_ORDER_NUMBER
 	FROM Sddb.Orders A
 	LEFT JOIN Sddb.Address B
-	ON Orders.SHIP_TO_ADDRESS_ID = Address.ADDRESS_ID  /**transfer datatype if it's scientific number**/
+	ON A.SHIP_TO_ADDRESS_ID = B.ADDRESS_ID  /**transfer datatype if it's scientific number**/
 	WHERE ORDERDATE GE &NovFY19start AND ORDERDATE LE &NovFY19end
 	GROUP BY COUNTRY
 	ORDER BY 2;
 QUIT;
 
 
-
 /*5.What are interesting findings for those who shop both shoes and kids in Nov FY19*/
+
+/*Calculate the base - the number of orders in which people shopped both shoes and kids*/
 
 PROC SQL;
 CREATE TABLE Insights_0 AS
 	SELECT COUNT(DISTINCT(ORDER_NUMBER)) AS sum_orders
 	FROM Sddb.Orders  
-	WHERE ORDERDATE GE &FY17DECstart AND ORDERDATE LE &FY17DECend 
+	WHERE ORDERDATE GE &NovFY19start AND ORDERDATE LE &NovFY19end 
 	AND Orders.GROUP_ID IN ('35','36')
 ;
 QUIT;
 
-/*Shopping channel*/
+/*Explore the percentage of conversion in each channel (APP, Site, Store...) and compare them by AOV*/
+
 PROC SQL;
 CREATE TABLE Insights_1 AS
 	SELECT 
