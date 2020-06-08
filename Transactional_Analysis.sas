@@ -1,4 +1,4 @@
-/*-------------------------------------------Order (Customer & Product) level----------------------------------------------*/
+/*-------------------------------------------Transactional (Customer & Product) level----------------------------------------------*/
 
 libname SDDB oracle user=dorisliu pass='****' path=neworacle  schema=SDMRK;
 
